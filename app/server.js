@@ -3,8 +3,17 @@ const fs = require('fs');
 const https = require("https")
 
 const app = express();
-const userRoute = require('./routes/user');
+//route pour tester
+const userRoute = require('./routes/User');
 app.use('/user', userRoute);
+
+//route pour le registre
+const registerRoute = require('./routes/Register');
+app.use('/Register', registerRoute);
+
+//route pour le login
+const loginRoute = require('./routes/Login');
+app.use('/Login', loginRoute);
 
 //Ajouter la licence
 // Charger les clés SSL
