@@ -8,3 +8,14 @@ const db = sql.createConnection({
 })
 
 module.exports = db;
+
+/*
+// Établir la connexion
+connection.connect((err) => {
+    if (err) {
+      console.error('Erreur de connexion : ' + err.stack);
+      return;
+    }
+    console.log('Connecté en tant que ID ' + connection.threadId);
+  });
+*/
