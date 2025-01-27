@@ -9,11 +9,11 @@ app.use('/user', userRoute);
 
 //route pour le registre
 const registerRoute = require('./routes/Register');
-app.use('/Register', registerRoute);
+app.use('/register', registerRoute);
 
 //route pour le login
 const loginRoute = require('./routes/Login');
-app.use('/Login', loginRoute);
+app.use('/login', loginRoute);
 
 //Ajouter la licence
 // Charger les clés SSL

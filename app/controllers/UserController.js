@@ -1,5 +1,7 @@
+const sql = require("./db_config")
+
 module.exports = {
     get: (req, res) => {
-        res.send("User: Ethan Tests");
+        res.send("Ethan test");
     }
 };
