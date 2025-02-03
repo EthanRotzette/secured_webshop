@@ -3,6 +3,9 @@ const fs = require('fs');
 const https = require("https")
 
 const app = express();
+//appel un middleware pour analyser les données d'un formulaire envoyé
+app.use(express.urlencoded({ extended: true }));
+
 //route pour tester
 const userRoute = require('./routes/User');
 app.use('/user', userRoute);

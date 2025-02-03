@@ -24,7 +24,7 @@ const getAllUsers = async () => {
 //requête pour avoir un utilistateur
 const getUser = async (name) =>{
     try {
-        const results = await db.promise().query(`SELECT * FROM t_users where useNom = "${name}";`);
+        const results = await db.promise().query(`SELECT * FROM t_users where useName = "${name}";`);
         console.log(results);
         return results;
       } catch (error) {
