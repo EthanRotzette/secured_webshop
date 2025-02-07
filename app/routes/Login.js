@@ -31,6 +31,9 @@ router.post("/auth", (req, res) => {
     return f;
   }
   //faire un test pour entre celui de la db et hashé
+  //import du mdp
+  const result = sql.getUser(req.body.username);
+
   res.send(result);
 });
 module.exports = router;

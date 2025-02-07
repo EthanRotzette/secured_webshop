@@ -32,4 +32,15 @@ const getUser = async (name) =>{
       }
 }
 
-module.exports = { getAllUsers,getUser };
+//requête pour avoir un utilistateur
+const getPasswordUser = async (name) =>{
+  try {
+      const results = await db.promise().query(`SELECT usePassword FROM t_users where useName = "${name}";`);
+      console.log(results);
+      return results;
+    } catch (error) {
+      console.log("error : ", error);
+    }
+}
+
+module.exports = { getAllUsers,getUser,getPasswordUser };
