@@ -1,5 +1,6 @@
 module.exports = {
     get: (req, res) => {
-        res.sendFile('register.html', {root:'./views'});
+        //res.sendFile('register.ejs', {root:'./views'});
+        res.render('register');
     }
 };

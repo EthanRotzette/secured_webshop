@@ -6,6 +6,9 @@ const app = express();
 //appel un middleware pour analyser les données d'un formulaire envoyé
 app.use(express.urlencoded({ extended: true }));
 
+//pour utiliser le moteur de template ejs
+app.set('view engine', 'ejs');
+
 //route pour tester
 const userRoute = require('./routes/User');
 app.use('/user', userRoute);
