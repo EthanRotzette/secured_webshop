@@ -3,29 +3,46 @@ const sql = require("../controllers/db_config");
 const router = express.Router();
 const controller = require("../controllers/LoginController");
 const jwt = require("jsonwebtoken");
+const strHash = require("../Utils/hash");
 
 router.get("/", controller.get);
 
 router.post("/auth", (req, res) => {
   const { username, password } = req.body;
 
-  if (username == "" || password == "") {
-    return res.status(404).sendFile("404-page.html", { root: "./views/error" });
-  }
-
-  //je (mot de passe bidon) = 9e507a6dfbf98393bbf23d487af7f1c5b2e8ea0635e3f0cddeac3a9a090a3dbe
   //hash la constant password
-  const hashPassword = strHash(password);
+  strHash(password).then((Password) => {
+    //faire un test pour entre celui de la db et hashé
+    //import du mdp
+    const UserPassword = sql.getPasswordUser(username).then((userResults) => {
+      // Accéder au mot de passe de la base de données
+      const dbPassword = userResults[0][0]?.usePassword;
+      
+      const saltDbPassword = ""
+      for(let i = 0; i < 9; i++)
+      {
+        saltDbPassword += dbPassword[i];  
+      }
 
-  console.log(hashPassword);
+      console.log("sel : ", saltDbPassword)
+      console.log('Mot de passe de la DB:', dbPassword);
+      console.log('Mot de passe hashé:', Password);
 
-  //faire un test pour entre celui de la db et hashé
-  //import du mdp
-  const UserPassword = sql.getPasswordUser(req.body.username).catch(res.status(404).json(`error, no existing users for ${username}`));
-  console.log(UserPassword);
-
-  //TODO faire le register
-
-  res.redirect("/user");  //actualiser le lien pour rediriger vers index (et ajouter un test de connection)
+      if (dbPassword && Password === dbPassword) {
+        res.redirect("/user");  // Redirection si mot de passe correct
+      } else {
+        //message d'erreur
+        res.render('login', { message: "Le mot de passe ne correspond pas" });
+      }
+    })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération du mot de passe :", error);
+        res.render('login', { message: "Erreur serveur. Veuillez réessayer." });
+      });
+  })
+    .catch((error) => {
+      console.error("Erreur lors du hashage du mot de passe :", error);
+      res.render('login', { message: "Erreur serveur. Veuillez réessayer." });
+    });
 });
 module.exports = router;

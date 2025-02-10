@@ -1,14 +1,14 @@
-const bcrypt = require("bcrypt")
+const crypto = require("crypto"); 
 
-    async function strHash(a, b) {
+async function strHash(a, b) {
     b = b || 'SHA-256';
-    var c = new TextEncoder().encode(a),
-        d = await bcrypt.subtle.digest(b, c),
-        e = Array.from(new Uint8Array(d)),
-        f = e.map(function(c) {
-          return c.toString(16).padStart(2, '0');
-        }).join('');
+    const c = new TextEncoder().encode(a);
+    const d = await crypto.subtle.digest(b, c);
+    const e = Array.from(new Uint8Array(d));
+    const f = e.map(function(byte) {
+        return byte.toString(16).padStart(2, '0');
+    }).join('');
     return f;
-  }
+}
 
 module.exports = strHash;

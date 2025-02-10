@@ -43,4 +43,15 @@ const getPasswordUser = async (name) =>{
     }
 }
 
-module.exports = { getAllUsers,getUser,getPasswordUser };
+//requête pour incérer une nouvelle personne
+const InsertNewUser = async (name, hashedPassword) =>{
+  try {
+      const results = await db.promise().query(`INSERT INTO t_users (useName,usePassword) VALUES ("${name}", "${hashedPassword}");`);
+      console.log('results', results);
+      return results;
+    } catch (error) {
+      console.log("error : ", error);
+    }
+}
+
+module.exports = { getAllUsers,getUser,getPasswordUser,InsertNewUser };

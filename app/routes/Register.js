@@ -1,25 +1,40 @@
 const express = require('express');
-const strHash = require('./Utils/hash')
+const strHash = require('../Utils/hash')
 const router = express.Router();
 const controller = require("../controllers/RegisterController");
-router.get('/', controller.get)
 const GenSalt = require("../Utils/GenerateSalt")
+const sql = require("../controllers/db_config")
 
-router.post('/create', (req,res) => {
+router.get('/', controller.get)
 
-    const {UserName,Password} = req.body;
+router.post('/create', (req, res) => {
 
-    const queryInsert = "INSERT INTO t_users (useName,usePassword) VALUES ( ?, ?)"
+    const UserName = req.body.username;
+    const password = req.body.password
+    const ConfirmPassword = req.body.ConfirmPassword;
 
-    if(UserName == null || Password == null)
+    if(password === ConfirmPassword)
     {
-        return res.status(404).render('404-page')
+        strHash(req.body.password).then((Password) => {
+    
+            if (UserName == null || Password == null) {
+                return res.status(404).render('404-page',{lien:"/register"})
+            }
+    
+            //génération du sel
+            const salt = GenSalt(10);
+    
+            try {
+                sql.InsertNewUser(UserName, (salt + Password));//.catch(res.status(404).json(`erreur dans l'insertion`));
+                res.redirect("/login", {message:""})    
+            } catch (error) {
+                console.log("error : ", error);
+            }
+        })
     }
-    //génération du sel
-    const salt = GenSalt(10);
-    //const SecuPasswrd = strHash(salt + Password);
-
-    //console.log(SecuPasswrd)
+    else{
+        return res.status(404).render('404-page', {lien:"/register"})
+    }
 })
 
 

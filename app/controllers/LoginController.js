@@ -6,6 +6,6 @@ module.exports = {
         //const result = sql.getUser("Blanchoud");
         //appel le fichier login.html
         //res.sendFile('login.ejs', {root:'./views'});
-        res.render('login');
+        res.render('login', {message:""});
     })
 };
