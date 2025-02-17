@@ -3,7 +3,7 @@ const strHash = require('../Utils/hash')
 const router = express.Router();
 const controller = require("../controllers/RegisterController");
 const GenSalt = require("../Utils/GenerateSalt")
-const sql = require("../controllers/db_config")
+const sql = require("../db/db_config")
 
 router.get('/', controller.get)
 
@@ -26,7 +26,7 @@ router.post('/create', (req, res) => {
     
             try {
                 sql.InsertNewUser(UserName, (salt + Password));//.catch(res.status(404).json(`erreur dans l'insertion`));
-                res.redirect("/login", {message:""})    
+                res.redirect("/login")    
             } catch (error) {
                 console.log("error : ", error);
             }

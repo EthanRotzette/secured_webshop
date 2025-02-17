@@ -1,25 +1,24 @@
 const express = require("express");
-const sql = require("../controllers/db_config");
+const sql = require("../db/db_config");
 const router = express.Router();
 const controller = require("../controllers/LoginController");
-const jwt = require("jsonwebtoken");
 const strHash = require("../Utils/hash");
+const {generateToken, auth} = require("../auth/auth")
 
 router.get("/", controller.get);
 
 router.post("/auth", (req, res) => {
   const { username, password } = req.body;
-
   //hash la constant password
   strHash(password).then((Password) => {
     //faire un test pour entre celui de la db et hashé
     //import du mdp
-    const UserPassword = sql.getPasswordUser(username).then((userResults) => {
+    sql.getPasswordUser(username).then((userResults) => {
       // Accéder au mot de passe de la base de données
       const dbPassword = userResults[0][0]?.usePassword;
       
-      const saltDbPassword = ""
-      for(let i = 0; i < 9; i++)
+      let saltDbPassword = ""
+      for(let i = 0; i < 10; i++)
       {
         saltDbPassword += dbPassword[i];  
       }
@@ -28,11 +27,15 @@ router.post("/auth", (req, res) => {
       console.log('Mot de passe de la DB:', dbPassword);
       console.log('Mot de passe hashé:', Password);
 
-      if (dbPassword && Password === dbPassword) {
-        res.redirect("/user");  // Redirection si mot de passe correct
+      if (dbPassword && (saltDbPassword + Password) === dbPassword) {
+        //token
+        const token = generateToken(username);
+        sql.InsertToken(token, username).then((_) => {
+          res.redirect(`/homepage?username=${req.body.username}`);  // Redirection si mot de passe correct
+        })
       } else {
         //message d'erreur
-        res.render('login', { message: "Le mot de passe ne correspond pas" });
+        res.render('login', { message: "Le mot de passe ou le nom d'utilisateur ne correspond pas" });
       }
     })
       .catch((error) => {

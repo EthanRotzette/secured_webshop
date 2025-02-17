@@ -9,9 +9,13 @@ app.use(express.urlencoded({ extended: true }));
 //pour utiliser le moteur de template ejs
 app.set('view engine', 'ejs');
 
-//route pour tester
+//route pour la homepage
 const userRoute = require('./routes/User');
-app.use('/user', userRoute);
+app.use('/homepage', userRoute);
+
+//route pour le profile
+const profileRoute = require('./routes/profile');
+app.use('/profile', profileRoute);
 
 //route pour le registre
 const registerRoute = require('./routes/Register');

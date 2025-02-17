@@ -1,4 +1,4 @@
-const sql = require("./db_config")
+const sql = require("../db/db_config")
 
 module.exports = {
     get: ('/', function(req, res) {
