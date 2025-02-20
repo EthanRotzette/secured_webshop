@@ -3,5 +3,5 @@ const {generateToken, auth}  = require("../auth/auth")
 const router = express.Router();
 const controller = require("../controllers/UserController");
 
-router.get('/', auth,controller.get) 
+router.get('/',controller.get) 
 module.exports = router;

@@ -1,10 +1,12 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const fs = require('fs');
 const https = require("https")
 
 const app = express();
 //appel un middleware pour analyser les données d'un formulaire envoyé
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 //pour utiliser le moteur de template ejs
 app.set('view engine', 'ejs');
@@ -14,7 +16,7 @@ const userRoute = require('./routes/User');
 app.use('/homepage', userRoute);
 
 //route pour le profile
-const profileRoute = require('./routes/profile');
+const profileRoute = require('./routes/Profile');
 app.use('/profile', profileRoute);
 
 //route pour le registre
@@ -24,6 +26,10 @@ app.use('/register', registerRoute);
 //route pour le login
 const loginRoute = require('./routes/Login');
 app.use('/login', loginRoute);
+
+//route pour la page admin
+const adminRoute = require('./routes/Admin');
+app.use('/admin', adminRoute);
 
 //Ajouter la licence
 // Charger les clés SSL

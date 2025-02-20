@@ -10,30 +10,38 @@ router.get('/', controller.get)
 router.post('/create', (req, res) => {
 
     const UserName = req.body.username;
-    const password = req.body.password
+    const Password = req.body.password
     const ConfirmPassword = req.body.ConfirmPassword;
 
-    if(password === ConfirmPassword)
-    {
+    if (Password === ConfirmPassword) {
         strHash(req.body.password).then((Password) => {
-    
+
             if (UserName == null || Password == null) {
-                return res.status(404).render('404-page',{lien:"/register"})
+                return res.status(404).render('errorPage', { ErrorMessage: "Remplissez les champs",lien: "/register" })
             }
-    
+
             //génération du sel
             const salt = GenSalt(10);
-    
+
+            //défini un regex qui autorise les lettres majuscules et minuscules, les chiffres, les accents et les espaces
+            const regex = /^[a-zA-ZÀ-ÿ0-9 ]+$/;
+
+            if (!regex.test(UserName) || !regex.test(Password)) {
+                return res.status(404).render('register', { message: "Les caractères spéciaux ne sont pas autorisés" })
+            }
+
             try {
-                sql.InsertNewUser(UserName, (salt + Password));//.catch(res.status(404).json(`erreur dans l'insertion`));
-                res.redirect("/login")    
+                sql.InsertNewUser(UserName, (salt + Password)).then((_) => {
+                    res.redirect("/login")
+                })
             } catch (error) {
                 console.log("error : ", error);
+                res.status(404).render('register', { message: "Le nom existe déjà" })
             }
         })
     }
-    else{
-        return res.status(404).render('404-page', {lien:"/register"})
+    else {
+        return res.status(404).render('register', { message: "Veuillez confirmer le mot de passe" })
     }
 })
 

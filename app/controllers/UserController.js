@@ -1,8 +1,12 @@
-const sql = require("../db/db_config")
-
 module.exports = {
     get: (req, res) => {
         //res.send("Ethan test");
-        res.render('index', {name:req.query.username});
+        const userData = req.cookies.userData;
+
+        if (!userData) {
+            res.render('index', { name: "" });
+        }
+        const [token, username] = req.cookies.userData.split("|");
+        res.render('index', { name: username });
     }
 };

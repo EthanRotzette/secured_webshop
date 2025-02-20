@@ -1,4 +1,5 @@
 const express = require("express");
+const cookie = require("cookie-parser");
 const sql = require("../db/db_config");
 const router = express.Router();
 const controller = require("../controllers/LoginController");
@@ -30,12 +31,17 @@ router.post("/auth", (req, res) => {
       if (dbPassword && (saltDbPassword + Password) === dbPassword) {
         //token
         const token = generateToken(username);
-        sql.InsertToken(token, username).then((_) => {
-          res.redirect(`/homepage?username=${req.body.username}`);  // Redirection si mot de passe correct
-        })
+        //sql.InsertToken(token, username).then((_) => {
+
+          //initialise un cookie avec le token et le nom d'utilisateur
+          res.cookie("userData",token+"|"+username,{maxAge: 900000, httpOnly: true, secure: true});
+          // Redirection si mot de passe correct
+          res.redirect(`/homepage`);  
+          
+        //})
       } else {
         //message d'erreur
-        res.render('login', { message: "Le mot de passe ou le nom d'utilisateur ne correspond pas" });
+        res.render('login', { message: "Le mot de passe ou le nom d'utilisateur est faux" });
       }
     })
       .catch((error) => {

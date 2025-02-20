@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'administration</title>
+</head>
+
+<body>
+    <h1>Page d'administration</h1>
+
+    <form action="/admin/search" method="post">
+        <input type="text" name="username" placeholder="Cherchez un utilisateur" id="username" required>
+        <button type="submit">Chercher</button>
+    </form>
+
+    <% if (UserList.length> 0) { %>
+        <h2>Résultats :</h2>
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Nom d'utilisateur</th>
+                <th>Admin</th>
+            </tr>
+            <% UserList.forEach(user=> { %>
+                <tr>
+                    <td>
+                        <%= user.id %>
+                    </td>
+                    <td>
+                        <%= user.useName %>
+                    </td>
+                    <td>
+                        <%= user.useIsAdmin ? "Oui" : "Non" %>
+                    </td>
+                </tr>
+                <% }) %>
+        </table>
+        <% } else { %>
+            <p>Aucun utilisateur trouvé.</p>
+            <% } %>
+        <a href="/profile">retour sur la page de profile</a>
+</body>
+
+</html>
