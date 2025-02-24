@@ -11,14 +11,17 @@ module.exports = {
         const [token, username] = req.cookies.userData.split("|");
 
         sql.getBoolAdminUser(username).then((result) =>{
-            //onsole.log(result);
+            //console.log(result);
             
             //prend la valeur de useIsAdmin
-            const isAdmin = result[0]?.useIsAdmin[0]===1
-            
+            const isAdmin = result
+
             //console.log(isAdmin);
             if(isAdmin){
-                res.render('admin', {UserList: ""});
+                sql.getAllUsers().then((userlist) =>{
+                    //console.log(userlist[0]);
+                    res.render('admin', {UserList: userlist[0]});
+                })
             }
             else{
                 res.redirect('/homepage');

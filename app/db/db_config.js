@@ -71,12 +71,12 @@ const getTokenUser = async (name) => {
   }
 }
 
-//requête pour avoir un utilistateur
+//requête pour savoir si un utilisateur est admin
 const getBoolAdminUser = async (name) => {
   try {
-    // le ? est une manière de se protéger contre les injections SQL
-    const [rows] = await db.promise().query(`SELECT useIsAdmin FROM t_users WHERE useName = "${name}"`); 
-    return rows;
+    // le ? est une manière de se protéger contre les injections SQL3
+    const result = await db.promise().query(`SELECT useIsAdmin FROM t_users WHERE useName = ? `,name); 
+    return result;
   } catch (error) {
     console.error("error : ", error);
     return [];
