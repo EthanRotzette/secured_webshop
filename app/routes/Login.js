@@ -33,10 +33,10 @@ router.post("/auth", (req, res) => {
         const token = generateToken(username);
         //sql.InsertToken(token, username).then((_) => {
 
-          //initialise un cookie avec le token et le nom d'utilisateur
-          res.cookie("userData",token+"|"+username,{maxAge: 900000, httpOnly: true, secure: true});
-          // Redirection si mot de passe correct
-          res.redirect(`/homepage`);  
+        //initialise un cookie avec le token et le nom d'utilisateur
+        res.cookie("userData",token + "|" + username,{maxAge: 900000, httpOnly: true, secure: true}); // 900000 exprimé en milliseconde (15 minutes)
+        // Redirection si mot de passe correct
+        res.redirect(`/homepage`);  
           
         //})
       } else {

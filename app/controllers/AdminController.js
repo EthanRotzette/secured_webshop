@@ -14,10 +14,10 @@ module.exports = {
             //onsole.log(result);
             
             //prend la valeur de useIsAdmin
-            const isAdmin = result[0]?.useIsAdmin
+            const isAdmin = result[0]?.useIsAdmin[0]===1
             
             //console.log(isAdmin);
-            if(isAdmin === 1){
+            if(isAdmin){
                 res.render('admin', {UserList: ""});
             }
             else{

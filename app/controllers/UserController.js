@@ -4,7 +4,7 @@ module.exports = {
         const userData = req.cookies.userData;
 
         if (!userData) {
-            res.render('index', { name: "" });
+            return res.render('index', { name: "" });
         }
         const [token, username] = req.cookies.userData.split("|");
         res.render('index', { name: username });
