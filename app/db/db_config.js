@@ -83,4 +83,16 @@ const getBoolAdminUser = async (name) => {
   }
 }
 
-module.exports = { getAllUsers, getUser, getPasswordUser, InsertNewUser, InsertToken, getTokenUser, getBoolAdminUser };
+// requête pour avoir le nom d'un utilisateur
+const getNameUser = async (name) => {
+  try {
+    // le ? est une manière de se protéger contre les injections SQL3
+    const result = await db.promise().query(`SELECT useName FROM t_users WHERE useName = ? `,name); 
+    return result;
+  } catch (error) {
+    console.error("error : ", error);
+    return [];
+  }
+}
+
+module.exports = { getAllUsers, getUser, getPasswordUser, InsertNewUser, InsertToken, getTokenUser, getBoolAdminUser, getNameUser };

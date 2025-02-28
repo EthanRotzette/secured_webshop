@@ -13,7 +13,7 @@ app.set('view engine', 'ejs');
 
 //route pour la homepage
 const userRoute = require('./routes/User');
-app.use('/homepage', userRoute);
+app.use('/', userRoute);
 
 //route pour le profile
 const profileRoute = require('./routes/Profile');

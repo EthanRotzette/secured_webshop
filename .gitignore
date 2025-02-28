@@ -3,3 +3,4 @@
 /.idea/
 /app/key
 /app/auth/key
+/app/.env

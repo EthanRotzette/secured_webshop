@@ -7,7 +7,7 @@ router.get('/', auth,controller.get)
 
 router.get('/disconnect', auth, (req,res) =>{
     res.clearCookie("userData");
-    res.redirect("/homepage")
+    res.redirect("/")
 });
 
 module.exports = router;
