@@ -14,6 +14,9 @@
         <input type="text" name="username" placeholder="Cherchez un utilisateur" id="username" required>
         <button type="submit">Chercher</button>
     </form>
+    <form action="/admin">
+        <button type="submit">Reset</button>
+    </form>
 
     <% if (UserList.length> 0) { %>
         <h2>Résultats :</h2>
@@ -26,7 +29,7 @@
             <% UserList.forEach(user=> { %>
                 <tr>
                     <td>
-                        <%= user.user_id %>
+                        <%= user.users_id %>
                     </td>
                     <td>
                         <%= user.useName %>

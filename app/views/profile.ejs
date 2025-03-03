@@ -8,18 +8,15 @@
 <body>
     <p>Bonjour <%=name%> !</p>
     <a href='/'>Page d'acceuil</a>
+    <% if (isAdmin == true) { %>
     <a id="adminRoute" href="/admin">Page admin</a>
+    <% } %>
     <a href="/profile/disconnect">Se déconnecter</a>
 </body>
 <script>
-    const adminRoute = document.getElementById("adminRoute");
-
     // Récupérer la variable `name` depuis les données EJS
     const name = "<%=name%>";
-
-    if (name !== "Admin") {
-        adminRoute.style.display = "none"; // Bonne syntaxe pour masquer l'élément
-    }
+    const isAdmin = "<%=isAdmin%>"
 </script>
 
 </html>

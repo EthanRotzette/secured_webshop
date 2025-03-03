@@ -83,7 +83,7 @@ router.post("/create", (req, res) => {
           //else de la condition de la vérification du mdp avec le mdp de confirmation
         } else {
           return res.status(404).render("register", {
-            message: "Veuillez confirmer le mot de passe",
+            message: "Le mot de passe ne correspond pas",
           });
         }
       } else {

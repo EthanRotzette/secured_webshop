@@ -5,7 +5,7 @@ const controller = require("../controllers/LoginController");
 const strHash = require("../Utils/hash");
 const { generateToken, auth } = require("../auth/auth");
 const PairOrNot = require("../Utils/PairOrNot");
-const Bcrypt = require("bcrypt")
+const Bcrypt = require("bcrypt");
 
 router.get("/", controller.get);
 
@@ -23,6 +23,12 @@ router.post("/auth", (req, res) => {
           .then((userResults) => {
             // Accéder au mot de passe de la base de données
             const dbPassword = userResults[0][0]?.usePassword;
+
+            if (!dbPassword) {
+              return res.render("login", {
+                message: "Cet utilisateur n'existe pas",
+              });
+            }
 
             let saltDbPassword = "";
             for (let i = 0; i < 10; i++) {
@@ -57,7 +63,7 @@ router.post("/auth", (req, res) => {
               error
             );
             res.render("login", {
-              message: "Erreur serveur. Veuillez réessayer.",
+              message: "Le mot de passe ou le nom d'utilisateur est faux",
             });
           });
       })
@@ -65,7 +71,7 @@ router.post("/auth", (req, res) => {
         console.error("Erreur lors du hashage du mot de passe :", error);
         res.render("login", { message: "Erreur serveur. Veuillez réessayer." });
       });
-  }else{
+  } else {
     sql.getPasswordUser(username).then((userResults) => {
       // Accéder au mot de passe de la base de données
       const dbPassword = userResults[0][0]?.usePassword;
@@ -73,8 +79,7 @@ router.post("/auth", (req, res) => {
       //console.log(dbPassword)
 
       Bcrypt.compare(password, dbPassword).then((result) => {
-        
-        if(result){
+        if (result) {
           const token = generateToken(username);
           //initialise un cookie avec le token et le nom d'utilisateur
           res.cookie("userData", token + "|" + username, {
@@ -84,15 +89,14 @@ router.post("/auth", (req, res) => {
           }); // 900000 exprimé en milliseconde (15 minutes)
           // Redirection si mot de passe correct
           res.redirect(`/`);
-        }else{
+        } else {
           //message d'erreur
           res.render("login", {
             message: "Le mot de passe ou le nom d'utilisateur est faux",
           });
         }
-      })
-
-    })
+      });
+    });
   }
 });
 module.exports = router;

@@ -4,7 +4,7 @@ const sql = require("../db/db_config");
 require('dotenv').config()
 
 function generateToken(username) {
-  const token = jwt.sign({ Name: username }, process.env.SECRET_KEY, { expiresIn: '30m' });
+  const token = jwt.sign({ Name: username }, /*process.env.SECRET_KEY*/ secretKey, { expiresIn: '30m' });
   //console.log("Token généré : " + token);
   return token;
 }
@@ -24,7 +24,7 @@ const auth = (req, res, next,) => {
   //console.log("token trouvé : " + token);
   if (!token) return res.redirect(`/login`);//status(403).send('Accès refusé. Token non fourni.');    
   try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const decoded = jwt.verify(token, /*process.env.SECRET_KEY*/ secretKey);
     req.user = decoded;
     next();
   } catch (exception) {

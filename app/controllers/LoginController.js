@@ -1,5 +1,3 @@
-const sql = require("../db/db_config")
-
 module.exports = {
     get: ('/', function(req, res) {
         //res.sendFile('C:/Users/pk50gbi/Documents/GitHub/secured_webshop/secured_webshop/app/views/login.html');
