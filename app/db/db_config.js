@@ -1,4 +1,5 @@
 require('dotenv').config()
+const { name } = require('ejs');
 const sql = require("mysql2");
 const db = sql.createConnection({
   host: process.env.DATABASE_HOST,
@@ -36,7 +37,7 @@ const getUser = async (name) => {
 //requête pour avoir un utilistateur
 const getPasswordUser = async (name) => {
   try {
-    const results = await db.promise().query(`SELECT usePassword FROM t_users where useName = "${name}";`);
+    const results = await db.promise().query(`SELECT usePassword FROM t_users where useName = ?;`, name);
     return results;
   } catch (error) {
     console.log("error : ", error);
@@ -46,25 +47,7 @@ const getPasswordUser = async (name) => {
 //requête pour incérer une nouvelle personne
 const InsertNewUser = async (name, hashedPassword) => {
   try {
-    const results = await db.promise().query(`INSERT INTO t_users (useName,usePassword) VALUES ("${name}", "${hashedPassword}");`);
-    return results;
-  } catch (error) {
-    console.log("error : ", error);
-  }
-}
-//incère un token
-const InsertToken = async (token, username) => {
-  try {
-    const results = await db.promise().query(`UPDATE t_users SET useToken = "${token}" WHERE useName = "${username}";`);
-    return results;
-  } catch (error) {
-    console.log("error : ", error);
-  }
-}
-//trouve un token en fonction d'un nom
-const getTokenUser = async (name) => {
-  try {
-    const results = await db.promise().query(`SELECT useToken FROM t_users WHERE useName = "${name}";`);
+    const results = await db.promise().query(`INSERT INTO t_users (useName,usePassword) VALUES (?, ?);`, [name, hashedPassword]);
     return results;
   } catch (error) {
     console.log("error : ", error);
@@ -95,4 +78,4 @@ const getNameUser = async (name) => {
   }
 }
 
-module.exports = { getAllUsers, getUser, getPasswordUser, InsertNewUser, InsertToken, getTokenUser, getBoolAdminUser, getNameUser };
+module.exports = { getAllUsers, getUser, getPasswordUser, InsertNewUser, getBoolAdminUser, getNameUser };

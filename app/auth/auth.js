@@ -18,8 +18,6 @@ const auth = (req, res, next,) => {
     return res.redirect(`/login`);
   }
 
-  //sql.getTokenUser(req.query.username).then((result) =>{
-  //const token = result[0][0]?.useToken
   const [token, username] = req.cookies.userData.split("|");
   //console.log("token trouvé : " + token);
   if (!token) return res.redirect(`/login`);//status(403).send('Accès refusé. Token non fourni.');    
@@ -30,8 +28,6 @@ const auth = (req, res, next,) => {
   } catch (exception) {
     res.redirect(`/login`);
   }
-
-  //})
 };
 
 module.exports = { generateToken, auth };
