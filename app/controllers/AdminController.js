@@ -14,9 +14,10 @@ module.exports = {
             //console.log(result);
             
             //prend la valeur de useIsAdmin
-            const isAdmin = result
+            //const isAdmin = result
+            const isAdmin = result[0][0].useIsAdmin === 1
 
-            //console.log(isAdmin);
+            console.log(isAdmin);
             if(isAdmin){
                 sql.getAllUsers().then((userlist) =>{
                     //console.log(userlist[0]);
@@ -24,11 +25,11 @@ module.exports = {
                 })
             }
             else{
-                res.redirect('/homepage');
+                res.redirect('/');
             }
         }).catch((error) => {
             console.error("Erreur SQL :", error);
-            res.status(500).render('errorPage', {ErrorMessage: "Erreur interne du serveur", lien: "/homepage"});
+            res.status(500).render('errorPage', {ErrorMessage: "Erreur interne du serveur", lien: "/"});
         });
     }
 };
