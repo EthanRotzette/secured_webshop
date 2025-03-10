@@ -17,7 +17,7 @@ module.exports = {
             //const isAdmin = result
             const isAdmin = result[0][0].useIsAdmin === 1
 
-            console.log(isAdmin);
+            //console.log(isAdmin);
             if(isAdmin){
                 sql.getAllUsers().then((userlist) =>{
                     //console.log(userlist[0]);
