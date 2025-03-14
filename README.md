@@ -7,4 +7,4 @@ D'abord, créez la base de données db_SecuWeb puis importer le fichier .slq pr�
 <br />`npm i` puis `npm start` 
 
 ## Page de démarrage
-http://localhost:443/user
+http://localhost:443/login
